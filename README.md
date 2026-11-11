@@ -14,7 +14,7 @@
 | 언어 | Python 3.14.7 (3.10 이상 필요) |
 | 외부 라이브러리 | 없음 (표준 라이브러리 `json`, `os`, `random`, `datetime`, `sys`만 사용) |
 | 데이터 파일 | 프로젝트 루트의 `state.json` (UTF-8) |
-| GitHub 저장소 | https://github.com/pjmcman/git-quiz-mission (커밋 24개, 브랜치 병합 1회: [8. Git 작업 기록](#8-git-작업-기록) 참고) |
+| GitHub 저장소 | https://github.com/pjmcman/git-quiz-mission (커밋 25개 이상, 브랜치 병합 1회: [8. Git 작업 기록](#8-git-작업-기록) 참고) |
 
 ![개발 환경](docs/screenshots/env.png)
 
@@ -117,6 +117,23 @@ E1-2/
 | `Quiz` | 퀴즈 1개 | `question`, `choices`(4개), `answer`(1-4) | `display()`, `is_correct()`, `to_dict()`, `from_dict()` |
 | `QuizGame` | 게임 전체 관리 | `quizzes`, `best_score`, `best_detail`, `history`, `state_file` | 아래 표 |
 
+### 왜 클래스를 썼나: 함수만으로 만든 경우와 비교
+
+**한 줄 요약:** 함수만 쓰면 데이터와 그 데이터를 다루는 코드가 따로 놀지만, 클래스는 **데이터(속성)와 동작(메서드)을 한 덩어리로 묶어서** 서로 관련된 것끼리 함께 관리할 수 있다.
+
+| 비교 | 함수만으로 구현할 때 | 클래스(`Quiz`, `QuizGame`)로 구현했을 때 |
+|---|---|---|
+| 데이터 보관 | 퀴즈를 `{'question': ..., 'choices': ..., 'answer': ...}` dict로 들고 다니고, 퀴즈 목록·최고 점수는 전역 변수나 매개변수로 넘긴다. | `Quiz` 객체가 `question`, `choices`, `answer`를 속성으로 직접 가진다. `QuizGame` 객체가 `self.quizzes`, `self.best_score`, `self.history`를 가진다. |
+| 함수 호출 | `play(quizzes, best_score, history, state_file)`처럼 매번 필요한 데이터를 모두 넘겨야 하고, 바뀐 값은 `return`으로 돌려받아야 한다. | `game.play()`만 호출하면 된다. 메서드가 `self`로 자기 데이터에 바로 접근하고 수정한다. |
+| 데이터 검증 | dict는 아무 값이나 들어갈 수 있다. 선택지가 3개여도 만들어지고, 문제가 생기는 곳에서 따로 검사해야 한다. | `Quiz.__init__`에서 한 번 검사한다. 선택지가 4개가 아니거나 정답이 1~4 밖이면 `ValueError`가 나서 잘못된 퀴즈는 만들어지지 않는다. |
+| 기능 찾기 / 수정 | 함수가 파일 여기저기 흩어져 어떤 함수가 어떤 데이터를 다루는지 이름으로만 추측해야 한다. | 퀴즈 1개에 대한 동작(`display`, `is_correct`)은 `Quiz`에, 게임 흐름(`play`, `add_quiz`, `save_state`)은 `QuizGame`에 모여 있다. 문제 형식을 바꿀 땐 `Quiz`만, 메뉴를 바꿀 땐 `QuizGame`만 고치면 된다. |
+| 여러 개 만들기 | 같은 구조의 dict를 손으로 맞춰 만들어야 한다. | `Quiz(...)`로 같은 구조의 객체를 몇 개든 만든다. (기본 퀴즈 10개, 사용자가 추가한 퀴즈 모두 `Quiz` 인스턴스) |
+
+**이 프로젝트에서 얻은 이점**
+- `__init__`이 객체를 만들 때 속성을 준비하고 검사하므로, 게임 어디서든 `Quiz`는 항상 올바른 형태라고 믿고 쓸 수 있다.
+- `self`가 "지금 이 객체"를 가리키기 때문에, `QuizGame`의 메서드끼리 매개변수를 주고받지 않고도 같은 퀴즈 목록과 점수를 함께 쓴다.
+- 저장(`to_dict`)과 불러오기(`from_dict`) 변환을 `Quiz`가 스스로 책임져서, `state.json` 형식이 바뀌어도 `Quiz` 한 곳만 고치면 된다.
+
 `QuizGame`의 메서드는 역할별로 나뉘어 있다.
 
 | 역할 | 메서드 |
@@ -169,17 +186,18 @@ E1-2/
 
 | 항목 | 값 |
 |---|---|
-| 총 커밋 수 | **24개** (`git rev-list --count HEAD`, 이 요약을 추가한 커밋 포함) |
+| 총 커밋 수 | **25개 이상** (`git rev-list --count HEAD`, 이 표를 갱신한 커밋 포함) |
 | 기능 커밋 (`Feat:`) | 9개 |
 | 리팩터 커밋 (`Refactor:`) | 1개 |
-| 문서 커밋 (`Docs:`) | 12개 (이 커밋 포함) |
+| 문서 커밋 (`Docs:`) | 13개 (이 표를 갱신한 커밋 포함) |
 | 설정 커밋 (`Chore:`) | 1개 |
 | 병합 커밋 (`Merge:`) | 1개 (`feature/play` → `main`) |
 
-아래는 이 요약을 추가하기 직전의 `git log --oneline --graph` 출력이다. (23개, 맨 아래가 첫 커밋)
+아래는 이 표를 갱신하기 직전의 `git log --oneline --graph` 출력이다. (24개, 맨 아래가 첫 커밋)
 
 ```
 $ git log --oneline --graph
+* dd3af7c Docs: README에 커밋 수와 git log --oneline 출력 추가
 * 6e54736 Docs: clone/pull 실습 과정과 git log 그래프 스크린샷 추가
 * 2d55ec4 Docs: clone 실습 - README 한 줄 추가
 * 056ab5e Docs: clone 실습 - 복제한 폴더에서 README 한 줄 추가 (시연)
