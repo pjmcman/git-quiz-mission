@@ -2,6 +2,8 @@
 
 import json
 import os
+import random
+from datetime import datetime
 
 from quiz import Quiz
 from quiz_data import create_default_quizzes
@@ -21,6 +23,7 @@ class QuizGame:
         self.quizzes = []        # Quiz 인스턴스 리스트
         self.best_score = None   # 최고 점수(100점 만점). 아직 풀지 않았으면 None
         self.best_detail = None  # 최고 점수를 낸 판의 {'correct': 맞힌 수, 'total': 문제 수}
+        self.history = []        # 모든 게임 기록 [{'played_at', 'total', 'correct', 'score'}, ...]
         self.load_state()
 
     # ------------------------------------------------------------------
@@ -31,6 +34,7 @@ class QuizGame:
         self.quizzes = create_default_quizzes()
         self.best_score = None
         self.best_detail = None
+        self.history = []
 
     def load_state(self):
         """state.json을 읽는다. 없거나 손상되었으면 기본 데이터로 시작한다."""
@@ -49,6 +53,10 @@ class QuizGame:
                 raise ValueError('best_score는 정수여야 합니다.')
             self.best_score = best_score
             self.best_detail = data.get('best_detail')
+            history = data.get('history', [])
+            if not isinstance(history, list):
+                raise ValueError('history는 리스트여야 합니다.')
+            self.history = history
             print(f'📂 저장된 데이터를 불러왔습니다. '
                   f'(퀴즈 {len(self.quizzes)}개, 최고점수 {self.best_text()})')
         except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
@@ -63,6 +71,7 @@ class QuizGame:
             'quizzes': [quiz.to_dict() for quiz in self.quizzes],
             'best_score': self.best_score,
             'best_detail': self.best_detail,
+            'history': self.history,
         }
         try:
             with open(self.state_file, 'w', encoding='utf-8') as file:
@@ -122,19 +131,21 @@ class QuizGame:
         print(DOUBLE_LINE)
 
     def play(self):
-        """저장된 퀴즈를 차례대로 출제하고, 다 풀면 결과를 보여준다."""
+        """저장된 퀴즈를 무작위 순서로 출제하고, 다 풀면 결과를 보여준다."""
         if not self.quizzes:
             print('⚠️  등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가하세요.')
             return
 
-        total = len(self.quizzes)
+        quizzes = self.quizzes[:]   # 원본 순서(목록 화면)는 그대로 두고 복사본만 섞는다
+        random.shuffle(quizzes)
+        total = len(quizzes)
         correct = 0
 
         print()
         print(f'📝 퀴즈를 시작합니다! (총 {total}문제)')
         print()
 
-        for number, quiz in enumerate(self.quizzes, start=1):
+        for number, quiz in enumerate(quizzes, start=1):
             print(LINE)
             quiz.display(number)
             answer = self.read_number('정답 입력: ', 1, Quiz.CHOICE_COUNT)
@@ -151,13 +162,23 @@ class QuizGame:
         print(f'🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)')
         self.update_best_score(score, correct, total)
         print(DOUBLE_LINE)
+        self.record_history(score, correct, total)
+
+    def record_history(self, score, correct, total):
+        """이번 게임 기록(날짜/시간, 문제 수, 맞힌 수, 점수)을 추가하고 저장한다."""
+        self.history.append({
+            'played_at': datetime.now().strftime('%Y-%m-%d %H:%M'),
+            'total': total,
+            'correct': correct,
+            'score': score,
+        })
+        self.save_state()
 
     def update_best_score(self, score, correct, total):
-        """이번 점수를 최고 점수와 비교해 더 높으면 갱신하고 저장한다."""
+        """이번 점수를 최고 점수와 비교해 더 높으면 갱신한다. (저장은 record_history에서)"""
         if self.best_score is None or score > self.best_score:
             self.best_score = score
             self.best_detail = {'correct': correct, 'total': total}
-            self.save_state()
             print('🎉 새로운 최고 점수입니다!')
         else:
             print(f'현재 최고 점수: {self.best_score}점')
@@ -209,6 +230,20 @@ class QuizGame:
             message += (f" ({self.best_detail['total']}문제 중 "
                         f"{self.best_detail['correct']}문제 정답)")
         print(message)
+        self.show_history()
+
+    def show_history(self, count=5):
+        """최근 게임 기록을 최대 count개 보여준다."""
+        if not self.history:
+            return
+        print()
+        print(f'🎮 플레이 기록 (총 {len(self.history)}회, 최근 {min(count, len(self.history))}회)')
+        print(LINE)
+        for record in self.history[-count:]:
+            print(f"{record.get('played_at', '-')}  "
+                  f"{record['total']}문제 중 {record['correct']}문제 정답 "
+                  f"({record['score']}점)")
+        print(LINE)
 
     # ------------------------------------------------------------------
     # 메인 루프
