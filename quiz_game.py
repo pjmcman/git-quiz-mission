@@ -1,5 +1,7 @@
 """게임 전체 흐름(메뉴, 입력 처리)을 관리하는 QuizGame 클래스."""
 
+from quiz_data import create_default_quizzes
+
 DOUBLE_LINE = '=' * 40
 
 MENU_MIN = 1
@@ -8,6 +10,9 @@ MENU_MAX = 5
 
 class QuizGame:
     """메뉴를 보여주고, 사용자가 고른 기능을 실행한다."""
+
+    def __init__(self):
+        self.quizzes = create_default_quizzes()   # Quiz 인스턴스 리스트
 
     # ------------------------------------------------------------------
     # 입력 처리
