@@ -19,7 +19,8 @@ class QuizGame:
     def __init__(self, state_file='state.json'):
         self.state_file = state_file
         self.quizzes = []        # Quiz 인스턴스 리스트
-        self.best_score = None   # 아직 풀지 않았으면 None
+        self.best_score = None   # 최고 점수(100점 만점). 아직 풀지 않았으면 None
+        self.best_detail = None  # 최고 점수를 낸 판의 {'correct': 맞힌 수, 'total': 문제 수}
         self.load_state()
 
     # ------------------------------------------------------------------
@@ -29,6 +30,7 @@ class QuizGame:
         """기본 퀴즈 데이터로 초기화한다."""
         self.quizzes = create_default_quizzes()
         self.best_score = None
+        self.best_detail = None
 
     def load_state(self):
         """state.json을 읽는다. 없거나 손상되었으면 기본 데이터로 시작한다."""
@@ -42,10 +44,13 @@ class QuizGame:
             with open(self.state_file, 'r', encoding='utf-8') as file:
                 data = json.load(file)
             self.quizzes = [Quiz.from_dict(item) for item in data['quizzes']]
-            self.best_score = data.get('best_score')
-            best_text = '없음' if self.best_score is None else f'{self.best_score}점'
+            best_score = data.get('best_score')
+            if best_score is not None and not isinstance(best_score, int):
+                raise ValueError('best_score는 정수여야 합니다.')
+            self.best_score = best_score
+            self.best_detail = data.get('best_detail')
             print(f'📂 저장된 데이터를 불러왔습니다. '
-                  f'(퀴즈 {len(self.quizzes)}개, 최고점수 {best_text})')
+                  f'(퀴즈 {len(self.quizzes)}개, 최고점수 {self.best_text()})')
         except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
             # 읽기 실패, JSON 문법 오류, 키 누락, 잘못된 값(선택지 3개 등) 모두 여기로
             print(f'⚠️  데이터 파일이 손상되어 기본 퀴즈로 복구합니다. ({error})')
@@ -57,6 +62,7 @@ class QuizGame:
         data = {
             'quizzes': [quiz.to_dict() for quiz in self.quizzes],
             'best_score': self.best_score,
+            'best_detail': self.best_detail,
         }
         try:
             with open(self.state_file, 'w', encoding='utf-8') as file:
@@ -143,7 +149,18 @@ class QuizGame:
         score = round(correct / total * 100)
         print(DOUBLE_LINE)
         print(f'🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)')
+        self.update_best_score(score, correct, total)
         print(DOUBLE_LINE)
+
+    def update_best_score(self, score, correct, total):
+        """이번 점수를 최고 점수와 비교해 더 높으면 갱신하고 저장한다."""
+        if self.best_score is None or score > self.best_score:
+            self.best_score = score
+            self.best_detail = {'correct': correct, 'total': total}
+            self.save_state()
+            print('🎉 새로운 최고 점수입니다!')
+        else:
+            print(f'현재 최고 점수: {self.best_score}점')
 
     def add_quiz(self):
         """문제, 선택지 4개, 정답 번호를 입력받아 새 퀴즈를 등록하고 저장한다."""
@@ -176,8 +193,22 @@ class QuizGame:
             print(f'[{index}] {quiz.question}')
         print(LINE)
 
+    def best_text(self):
+        """최고 점수를 '80점' 또는 '없음' 같은 글자로 돌려준다."""
+        return '없음' if self.best_score is None else f'{self.best_score}점'
+
     def show_score(self):
-        print('🚧 점수 확인 기능은 준비 중입니다.')
+        """최고 점수를 보여준다. 아직 풀지 않았으면 안내한다."""
+        print()
+        if self.best_score is None:
+            print('⚠️  아직 퀴즈를 풀지 않았습니다. 1번 메뉴에서 퀴즈를 풀어 보세요.')
+            return
+
+        message = f'🏆 최고 점수: {self.best_score}점'
+        if self.best_detail:
+            message += (f" ({self.best_detail['total']}문제 중 "
+                        f"{self.best_detail['correct']}문제 정답)")
+        print(message)
 
     # ------------------------------------------------------------------
     # 메인 루프
