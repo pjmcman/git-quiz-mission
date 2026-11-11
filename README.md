@@ -216,3 +216,4 @@ E1-2/
 - [x] 실행 화면 스크린샷 → `docs/screenshots/` (menu.png, play.png, add_quiz.png, score.png)
 - [ ] `git log --oneline --graph` 스크린샷 → `docs/screenshots/git_log.png`
 - [ ] GitHub 저장소 URL 제출
+> clone/pull 실습 (직접): E1-2-clone2에서 추가한 뒤 push했다.
