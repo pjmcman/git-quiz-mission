@@ -14,6 +14,7 @@
 | 언어 | Python 3.14.7 (3.10 이상 필요) |
 | 외부 라이브러리 | 없음 (표준 라이브러리 `json`, `os`, `random`, `datetime`, `sys`만 사용) |
 | 데이터 파일 | 프로젝트 루트의 `state.json` (UTF-8) |
+| GitHub 저장소 | https://github.com/pjmcman/git-quiz-mission (커밋 24개, 브랜치 병합 1회: [8. Git 작업 기록](#8-git-작업-기록) 참고) |
 
 ![개발 환경](docs/screenshots/env.png)
 
@@ -163,6 +164,50 @@ E1-2/
 점수는 `round(맞힌 수 / 문제 수 × 100)`으로 계산한다.
 
 ## 8. Git 작업 기록
+
+### 커밋 기록 요약
+
+| 항목 | 값 |
+|---|---|
+| 총 커밋 수 | **24개** (`git rev-list --count HEAD`, 이 요약을 추가한 커밋 포함) |
+| 기능 커밋 (`Feat:`) | 9개 |
+| 리팩터 커밋 (`Refactor:`) | 1개 |
+| 문서 커밋 (`Docs:`) | 12개 (이 커밋 포함) |
+| 설정 커밋 (`Chore:`) | 1개 |
+| 병합 커밋 (`Merge:`) | 1개 (`feature/play` → `main`) |
+
+아래는 이 요약을 추가하기 직전의 `git log --oneline --graph` 출력이다. (23개, 맨 아래가 첫 커밋)
+
+```
+$ git log --oneline --graph
+* 6e54736 Docs: clone/pull 실습 과정과 git log 그래프 스크린샷 추가
+* 2d55ec4 Docs: clone 실습 - README 한 줄 추가
+* 056ab5e Docs: clone 실습 - 복제한 폴더에서 README 한 줄 추가 (시연)
+* a349b13 Docs: README 완성 (실행 방법, 기능 목록, 실행 화면, 파일 구조, state.json 설명)
+* 42573a7 Refactor: QuizGame 구조 정리 (역할별 메서드 분리, 메뉴 표 하나로 관리)
+* 181f7e7 Docs: 점수 기록 히스토리 화면 스크린샷 추가
+* 97c172c Feat: 랜덤 출제와 점수 기록 히스토리 추가 (보너스)
+* 0b11c40 Docs: 퀴즈 풀기(오답·결과)·점수 확인·재실행 스크린샷 추가
+* 61410ce Feat: 최고 점수 기능 구현 (비교·갱신·저장, 점수 확인 화면)
+* 21914af Docs: 퀴즈 목록 화면 스크린샷 추가
+* 6a50690 Feat: 퀴즈 목록 기능 구현 (번호와 문제 출력, 빈 목록 처리)
+* cb7eaec Docs: 퀴즈 추가 화면 스크린샷 추가
+* a08136e Feat: 퀴즈 추가 기능 구현 (입력 검증 후 state.json에 저장)
+* 1200f77 Feat: state.json 저장/불러오기 구현 (파일 없음·손상 시 기본 데이터로 복구)
+* fc51a93 Docs: 퀴즈 풀기·브랜치 병합 스크린샷 추가
+*   37d0bf2 Merge: feature/play 퀴즈 풀기 기능 병합
+|\  
+| * 2aba796 Feat: 퀴즈 풀기 기능 구현 (출제, 정답 확인, 결과 표시)
+|/  
+* 396187e Feat: 기본 퀴즈 데이터 10개 작성 (Python·Git 기초 개념)
+* 13e518e Feat: Quiz 클래스 추가 (문제 출력, 정답 확인, dict 변환)
+* d4bfab1 Docs: 개발 환경·메뉴 스크린샷 추가 및 체크리스트 갱신
+* 8500542 Feat: 메뉴 출력과 입력 예외 처리 (빈 입력, 문자, 범위 밖, Ctrl+C/EOF)
+* 94e8368 Docs: 진행 체크리스트 추가 및 스크린샷 폴더 생성
+* d098568 Chore: 프로젝트 초기 설정 (.gitignore, README 개요)
+```
+
+### 사용한 Git 명령어
 
 | 명령어 | 사용한 곳 |
 |---|---|
