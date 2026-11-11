@@ -42,7 +42,7 @@
 - [x] 8. Feat: 퀴즈 목록
 - [x] 9. Feat: 최고 점수 확인
 - [x] 10. Feat: 랜덤 출제 + 점수 기록 히스토리 (보너스)
-- [ ] 11. Refactor: QuizGame 구조 정리
+- [x] 11. Refactor: QuizGame 구조 정리
 - [ ] 12. Docs: README 완성 (실행 방법, 기능 목록, 파일 구조, state.json 설명) → 최종 push
 
 ### 2. clone / pull 실습 🙋
