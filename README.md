@@ -173,6 +173,8 @@ E1-2/
 | `git merge` | `git merge --no-ff feature/play`로 퀴즈 풀기 기능 병합 |
 | `git clone` / `git pull` | 다른 폴더에 복제 → 수정·push → 원래 폴더에서 pull |
 
+> clone/pull 실습 (Claude 시연): 이 줄은 복제한 폴더(E1-2-clone)에서 추가한 뒤 push했다.
+
 **브랜치 병합 과정** (`git checkout main` → `git merge --no-ff feature/play`)
 
 ![브랜치 병합](docs/screenshots/merge.png)
