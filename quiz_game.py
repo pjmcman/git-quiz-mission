@@ -1,7 +1,9 @@
 """게임 전체 흐름(메뉴, 입력 처리)을 관리하는 QuizGame 클래스."""
 
+from quiz import Quiz
 from quiz_data import create_default_quizzes
 
+LINE = '-' * 40
 DOUBLE_LINE = '=' * 40
 
 MENU_MIN = 1
@@ -57,7 +59,34 @@ class QuizGame:
         print(DOUBLE_LINE)
 
     def play(self):
-        print('🚧 퀴즈 풀기 기능은 준비 중입니다.')
+        """저장된 퀴즈를 차례대로 출제하고, 다 풀면 결과를 보여준다."""
+        if not self.quizzes:
+            print('⚠️  등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가하세요.')
+            return
+
+        total = len(self.quizzes)
+        correct = 0
+
+        print()
+        print(f'📝 퀴즈를 시작합니다! (총 {total}문제)')
+        print()
+
+        for number, quiz in enumerate(self.quizzes, start=1):
+            print(LINE)
+            quiz.display(number)
+            answer = self.read_number('정답 입력: ', 1, Quiz.CHOICE_COUNT)
+            if quiz.is_correct(answer):
+                correct += 1
+                print('✅ 정답입니다!')
+            else:
+                print(f'❌ 오답입니다. 정답은 {quiz.answer}번 '
+                      f'({quiz.choices[quiz.answer - 1]}) 입니다.')
+            print()
+
+        score = round(correct / total * 100)
+        print(DOUBLE_LINE)
+        print(f'🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)')
+        print(DOUBLE_LINE)
 
     def add_quiz(self):
         print('🚧 퀴즈 추가 기능은 준비 중입니다.')
