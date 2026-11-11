@@ -34,7 +34,7 @@
 - [x] 2. Feat: 메뉴 출력과 입력 예외 처리 (잘못된 입력, 빈 입력, Ctrl+C/EOF)
 - [x] 3. Feat: Quiz 클래스 (문제·선택지 4개·정답, 출력, 정답 확인)
 - [x] 4. Feat: 기본 퀴즈 데이터 10개
-- [ ] 5. Feat: 퀴즈 풀기 🙋 **브랜치 작업**
+- [x] 5. Feat: 퀴즈 풀기 🙋 **브랜치 작업**
   - `git checkout -b feature/play` → 개발·커밋
   - `git checkout main` → `git merge feature/play` → `git push`
 - [ ] 6. Feat: state.json 저장/불러오기 (파일 없음·손상 처리)
