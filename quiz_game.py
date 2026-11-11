@@ -68,6 +68,15 @@ class QuizGame:
     # 입력 처리
     # ------------------------------------------------------------------
     @staticmethod
+    def read_text(prompt):
+        """빈 문자열이 아닌 글자를 받을 때까지 다시 묻는다. 앞뒤 공백은 제거한다."""
+        while True:
+            value = input(prompt).strip()
+            if value:
+                return value
+            print('⚠️  빈 값은 입력할 수 없습니다. 다시 입력하세요.')
+
+    @staticmethod
     def read_number(prompt, minimum, maximum):
         """minimum~maximum 범위의 정수를 받을 때까지 다시 묻는다.
 
@@ -137,7 +146,21 @@ class QuizGame:
         print(DOUBLE_LINE)
 
     def add_quiz(self):
-        print('🚧 퀴즈 추가 기능은 준비 중입니다.')
+        """문제, 선택지 4개, 정답 번호를 입력받아 새 퀴즈를 등록하고 저장한다."""
+        print()
+        print('📌 새로운 퀴즈를 추가합니다.')
+        print()
+        question = self.read_text('문제를 입력하세요: ')
+        choices = []
+        for index in range(1, Quiz.CHOICE_COUNT + 1):
+            choices.append(self.read_text(f'선택지 {index}: '))
+        answer = self.read_number(f'정답 번호 (1-{Quiz.CHOICE_COUNT}): ',
+                                  1, Quiz.CHOICE_COUNT)
+
+        self.quizzes.append(Quiz(question, choices, answer))
+        self.save_state()
+        print()
+        print(f'✅ 퀴즈가 추가되었습니다! (현재 {len(self.quizzes)}개)')
 
     def list_quizzes(self):
         print('🚧 퀴즈 목록 기능은 준비 중입니다.')
