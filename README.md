@@ -32,7 +32,7 @@
 ### 1. 기능 개발 (단계마다 커밋)
 - [x] 1. Chore: 초기 설정 (.gitignore, README 개요)
 - [x] 2. Feat: 메뉴 출력과 입력 예외 처리 (잘못된 입력, 빈 입력, Ctrl+C/EOF)
-- [ ] 3. Feat: Quiz 클래스 (문제·선택지 4개·정답, 출력, 정답 확인)
+- [x] 3. Feat: Quiz 클래스 (문제·선택지 4개·정답, 출력, 정답 확인)
 - [ ] 4. Feat: 기본 퀴즈 데이터 10개
 - [ ] 5. Feat: 퀴즈 풀기 🙋 **브랜치 작업**
   - `git checkout -b feature/play` → 개발·커밋
