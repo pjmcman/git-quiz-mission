@@ -24,14 +24,14 @@
 > 한 단계가 끝날 때마다 `[ ]`를 `[x]`로 바꾼다. 🙋 표시는 **내가 직접** 해야 하는 일이다.
 
 ### 0. 준비 🙋
-- [ ] GitHub에 새 저장소 만들기 (Public, README/.gitignore 체크 안 함)
-- [ ] 로컬 저장소와 연결: `git remote add origin <저장소 URL>`
-- [ ] 첫 push: `git push -u origin main`
-- [ ] 개발 환경 스크린샷 찍기 (VSCode, `python --version`, `git config --list`) → `docs/screenshots/env.png`
+- [x] GitHub에 새 저장소 만들기 (Public, README/.gitignore 체크 안 함)
+- [x] 로컬 저장소와 연결: `git remote add origin <저장소 URL>`
+- [x] 첫 push: `git push -u origin main`
+- [x] 개발 환경 스크린샷 찍기 (VSCode, `python --version`, `git config --list`) → `docs/screenshots/env.png`
 
 ### 1. 기능 개발 (단계마다 커밋)
 - [x] 1. Chore: 초기 설정 (.gitignore, README 개요)
-- [ ] 2. Feat: 메뉴 출력과 입력 예외 처리 (잘못된 입력, 빈 입력, Ctrl+C/EOF)
+- [x] 2. Feat: 메뉴 출력과 입력 예외 처리 (잘못된 입력, 빈 입력, Ctrl+C/EOF)
 - [ ] 3. Feat: Quiz 클래스 (문제·선택지 4개·정답, 출력, 정답 확인)
 - [ ] 4. Feat: 기본 퀴즈 데이터 10개
 - [ ] 5. Feat: 퀴즈 풀기 🙋 **브랜치 작업**
