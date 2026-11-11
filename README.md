@@ -39,7 +39,7 @@
   - `git checkout main` → `git merge feature/play` → `git push`
 - [x] 6. Feat: state.json 저장/불러오기 (파일 없음·손상 처리)
 - [x] 7. Feat: 퀴즈 추가
-- [ ] 8. Feat: 퀴즈 목록
+- [x] 8. Feat: 퀴즈 목록
 - [ ] 9. Feat: 최고 점수 확인
 - [ ] 10. Feat: 랜덤 출제 + 점수 기록 히스토리 (보너스)
 - [ ] 11. Refactor: QuizGame 구조 정리
