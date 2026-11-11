@@ -174,12 +174,35 @@ E1-2/
 | `git clone` / `git pull` | 다른 폴더에 복제 → 수정·push → 원래 폴더에서 pull |
 
 > clone/pull 실습 (Claude 시연): 이 줄은 복제한 폴더(E1-2-clone)에서 추가한 뒤 push했다.
+>
+> clone/pull 실습 (직접): E1-2-clone2에서 추가한 뒤 push했다.
 
 **브랜치 병합 과정** (`git checkout main` → `git merge --no-ff feature/play`)
 
 ![브랜치 병합](docs/screenshots/merge.png)
 
-<!-- clone/pull 실습 후 git log --oneline --graph 스크린샷 추가 예정: docs/screenshots/git_log.png -->
+### clone / pull 실습 과정
+
+1. `git clone https://github.com/pjmcman/git-quiz-mission.git E1-2-clone2` 로 다른 폴더에 복제
+2. 복제한 폴더에서 README에 한 줄 추가 → `git status`로 수정 확인
+
+   ![clone 후 수정](docs/screenshots/clone_modify.png)
+
+3. `git add` → `git commit` → `git push` (`056ab5e..2d55ec4  main -> main`)
+
+   ![commit과 push](docs/screenshots/clone_push.png)
+
+4. 원래 폴더(`E1-2`)에서 `git pull` → `Fast-forward`로 `2d55ec4`를 받아 README에 위 줄이 반영됨
+
+### `git log --oneline --graph`
+
+최근 커밋 (clone 실습 커밋이 맨 위, `HEAD -> main, origin/main`):
+
+![git log 최근](docs/screenshots/git_log_top.png)
+
+전체 그래프 (`feature/play` 브랜치가 갈라졌다가 `--no-ff`로 병합된 모양):
+
+![git log 전체](docs/screenshots/git_log.png)
 
 ## 진행 체크리스트
 
@@ -208,12 +231,11 @@ E1-2/
 - [x] 12. Docs: README 완성 (실행 방법, 기능 목록, 파일 구조, state.json 설명) → 최종 push
 
 ### 2. clone / pull 실습 🙋
-- [ ] 다른 폴더에서 `git clone <저장소 URL>`
-- [ ] 복제한 폴더에서 README에 한 줄 추가 → commit → push
-- [ ] 원래 폴더로 돌아와 `git pull` → 변경 반영 확인
+- [x] 다른 폴더에서 `git clone <저장소 URL>`
+- [x] 복제한 폴더에서 README에 한 줄 추가 → commit → push
+- [x] 원래 폴더로 돌아와 `git pull` → 변경 반영 확인
 
 ### 3. 제출물 🙋
 - [x] 실행 화면 스크린샷 → `docs/screenshots/` (menu.png, play.png, add_quiz.png, score.png)
-- [ ] `git log --oneline --graph` 스크린샷 → `docs/screenshots/git_log.png`
+- [x] `git log --oneline --graph` 스크린샷 → `docs/screenshots/git_log.png`
 - [ ] GitHub 저장소 URL 제출
-> clone/pull 실습 (직접): E1-2-clone2에서 추가한 뒤 push했다.
