@@ -37,7 +37,7 @@
 - [x] 5. Feat: 퀴즈 풀기 🙋 **브랜치 작업**
   - `git checkout -b feature/play` → 개발·커밋
   - `git checkout main` → `git merge feature/play` → `git push`
-- [ ] 6. Feat: state.json 저장/불러오기 (파일 없음·손상 처리)
+- [x] 6. Feat: state.json 저장/불러오기 (파일 없음·손상 처리)
 - [ ] 7. Feat: 퀴즈 추가
 - [ ] 8. Feat: 퀴즈 목록
 - [ ] 9. Feat: 최고 점수 확인
